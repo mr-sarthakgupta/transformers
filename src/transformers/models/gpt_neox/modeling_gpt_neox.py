@@ -908,6 +908,8 @@ class GPTNeoXModel(GPTNeoXPreTrainedModel):
             if output_attentions:
                 all_attentions = all_attentions + (outputs[2 if use_cache else 1],)
 
+        hidden_states = hidden_states.type_as(self.final_layer_norm.weight)
+
         hidden_states = self.final_layer_norm(hidden_states)
         # Add last hidden state
         if output_hidden_states:
