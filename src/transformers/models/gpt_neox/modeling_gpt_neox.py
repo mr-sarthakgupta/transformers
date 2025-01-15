@@ -867,6 +867,13 @@ class GPTNeoXModel(GPTNeoXPreTrainedModel):
         for i, layer in enumerate(
             self.layers,
         ):
+            for param in layer.parameters():
+                hidden_states = hidden_states.type(param.dtype)
+                if head_mask[i] is not None:
+                    head_mask[i] = head_mask[i].type(param.dtype)
+                if causal_mask is not None:
+                    causal_mask = causal_mask.type(param.dtype)
+                break
             if output_hidden_states:
                 all_hidden_states = all_hidden_states + (hidden_states,)
 
